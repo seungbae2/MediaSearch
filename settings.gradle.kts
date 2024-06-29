@@ -23,4 +23,6 @@ dependencyResolutionManagement {
 rootProject.name = "MediaSearch"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
-include(":convention")
+include(":core:designsystem")
+include(":feature:search")
+include(":feature:bookmarks")

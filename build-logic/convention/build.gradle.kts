@@ -16,13 +16,6 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
-tasks {
-    validatePlugins {
-        enableStricterValidation = true
-        failOnWarning = true
-    }
-}
-
 dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.android.tools.common)

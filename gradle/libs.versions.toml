@@ -70,7 +70,6 @@ javax-inject = { module = "javax.inject:javax.inject", version = "1" }
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
-coil-kt-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
 
 
 # hilt
