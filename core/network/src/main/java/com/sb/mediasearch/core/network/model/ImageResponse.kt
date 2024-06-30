@@ -15,6 +15,7 @@ data class ImageResponse(
     val height: Int,
     @SerialName("display_sitename")
     val displaySitename: String,
+    @SerialName("doc_url")
     val docUrl: String,
     val datetime: Instant,
 )

@@ -1,5 +1,6 @@
 package com.sb.mediasearch.core.network.di
 
+import com.sb.mediasearch.core.network.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

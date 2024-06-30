@@ -18,5 +18,4 @@ dependencies {
 
     api(libs.androidx.paging.runtime)
     api(libs.androidx.paging.compose)
-
 }

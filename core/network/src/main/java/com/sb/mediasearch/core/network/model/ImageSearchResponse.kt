@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ImageSearchResponse(
     val documents: List<ImageResponse>,
-    val metaResponse: MetaResponse
+    val meta: MetaResponse
 )
