@@ -8,4 +8,5 @@ data class Content(
     val url: String,
     val datetime: Instant,
     val type: String,
+    val isBookmarked: Boolean = false,
 )

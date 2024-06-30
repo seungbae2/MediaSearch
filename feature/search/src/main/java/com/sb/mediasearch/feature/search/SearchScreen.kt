@@ -1,5 +1,6 @@
 package com.sb.mediasearch.feature.search
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,9 +8,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +26,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.sb.mediasearch.core.common.instant.formatToDateTimeString
 import com.sb.mediasearch.core.designsystem.component.DynamicAsyncImage
+import com.sb.mediasearch.core.designsystem.icon.MsIcons
 import com.sb.mediasearch.core.model.Content
 import com.sb.mediasearch.feature.search.component.SearchToolbar
 
@@ -83,17 +89,11 @@ internal fun SearchScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(searchPagingResult.itemCount) { index ->
-                        searchPagingResult[index]?.thumbnailUrl?.let {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable { onClickBookmark(searchPagingResult[index]!!) }
-                            ) {
-                                DynamicAsyncImage(
-                                    imageUrl = it,
-                                )
-                            }
-
+                        searchPagingResult[index]?.let {
+                            ItemCard(
+                                content = it,
+                                onClickBookmark = onClickBookmark
+                            )
                         }
                     }
                 }
@@ -102,3 +102,33 @@ internal fun SearchScreen(
     }
 }
 
+@Composable
+fun ItemCard(content: Content, onClickBookmark: (Content) -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+//            .clickable { onClick(content) }
+            .padding(8.dp)
+    ) {
+        DynamicAsyncImage(
+            imageUrl = content.thumbnailUrl,
+        )
+        Text(
+            text = content.datetime.formatToDateTimeString(),
+            style = MaterialTheme.typography.bodySmall.copy(color = Color.White),
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .background(Color.Black.copy(alpha = 0.5f))
+                .padding(4.dp)
+        )
+        Icon(
+            imageVector = if (content.isBookmarked) MsIcons.Bookmark else MsIcons.BookmarkBorder,
+            contentDescription = null,
+            tint = Color.Yellow,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp)
+                .clickable { onClickBookmark(content) }
+        )
+    }
+}
