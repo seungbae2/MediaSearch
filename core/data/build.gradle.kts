@@ -12,6 +12,7 @@ dependencies {
     api(projects.core.common)
     api(projects.core.model)
     api(projects.core.network)
+    api(projects.core.database)
 
     implementation(libs.sandwich)
     implementation(libs.kotlinx.serialization.json)

@@ -5,7 +5,6 @@ import androidx.paging.PagingState
 import com.sb.mediasearch.core.common.network.Dispatcher
 import com.sb.mediasearch.core.common.network.MsDispatchers
 import com.sb.mediasearch.core.model.Content
-import com.sb.mediasearch.core.model.ContentType
 import com.sb.mediasearch.core.network.KakaoNetworkDataSource
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
@@ -17,8 +16,8 @@ import kotlinx.coroutines.withContext
 internal class SearchContentsPagingSource (
     @Dispatcher(MsDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
     private val kakaoNetwork: KakaoNetworkDataSource,
-    private val query: String,
-    private val sort: String,
+    private val query: kotlin.String,
+    private val sort: kotlin.String,
 ) : PagingSource<Int, Content>() {
     override fun getRefreshKey(state: PagingState<Int, Content>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -69,7 +68,7 @@ internal class SearchContentsPagingSource (
                                 thumbnailUrl = video.thumbnail,
                                 url = video.url,
                                 datetime = video.datetime,
-                                type = ContentType.VIDEO
+                                type = "video"
                             )
                         })
                     }
@@ -89,7 +88,7 @@ internal class SearchContentsPagingSource (
                                 thumbnailUrl = image.thumbnailUrl,
                                 url = image.imageUrl,
                                 datetime = image.datetime,
-                                type = ContentType.IMAGE
+                                type = "image"
                             )
                         })
                     }
@@ -102,7 +101,6 @@ internal class SearchContentsPagingSource (
 
                 val combinedContents: List<Content> = (videoContents + imageContents).sortedByDescending { it.datetime }
                 val isEnd = videoIsEnd && imageIsEnd
-
 
                 LoadResult.Page(
                     data = combinedContents,

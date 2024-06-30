@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.sb.mediasearch.core.data.repository.BookmarkRepository
 import com.sb.mediasearch.core.domain.SearchContentsUseCase
 import com.sb.mediasearch.core.model.Content
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val searchContentsUseCase: SearchContentsUseCase,
+    private val bookmarkRepository: BookmarkRepository,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     val searchQuery = savedStateHandle.getStateFlow(key = SEARCH_QUERY, initialValue = "")
@@ -49,6 +51,12 @@ class SearchViewModel @Inject constructor(
                 .collect { pagingData ->
                     _searchPagingResult.value = pagingData
                 }
+        }
+    }
+
+    fun insertOrReplaceBookmarkedContent(content: Content) {
+        viewModelScope.launch {
+            bookmarkRepository.insertOrReplaceBookmarkedContent(content)
         }
     }
 

@@ -1,17 +1,15 @@
 package com.sb.mediasearch.feature.search
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,6 +38,7 @@ internal fun SearchRoute(
         modifier = modifier,
         searchQuery = searchQuery,
         onSearchQueryChanged = viewModel::onSearchQueryChanged,
+        onClickBookmark = viewModel::insertOrReplaceBookmarkedContent,
         searchPagingResult = searchPagingResult,
     )
 }
@@ -49,6 +48,7 @@ internal fun SearchScreen(
     modifier: Modifier = Modifier,
     searchQuery: String = "",
     onSearchQueryChanged: (String) -> Unit = {},
+    onClickBookmark: (Content) -> Unit = {},
     searchPagingResult: LazyPagingItems<Content>
 ) {
     Column(modifier = modifier) {
@@ -60,7 +60,6 @@ internal fun SearchScreen(
 
         when {
             loadState.refresh is LoadState.Loading -> {
-                // 로딩 중일 때 표시할 UI
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
@@ -85,29 +84,21 @@ internal fun SearchScreen(
                 ) {
                     items(searchPagingResult.itemCount) { index ->
                         searchPagingResult[index]?.thumbnailUrl?.let {
-                            DynamicAsyncImage(
-                                imageUrl = it,
-                            )
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { onClickBookmark(searchPagingResult[index]!!) }
+                            ) {
+                                DynamicAsyncImage(
+                                    imageUrl = it,
+                                )
+                            }
+
                         }
                     }
                 }
             }
         }
-
-//        LazyVerticalGrid(
-//            columns = GridCells.Adaptive(minSize = 128.dp),
-//            contentPadding = PaddingValues(8.dp),
-//            horizontalArrangement = Arrangement.spacedBy(8.dp),
-//            verticalArrangement = Arrangement.spacedBy(8.dp)
-//        ) {
-//            items(searchPagingResult.itemCount) { index ->
-//                searchPagingResult[index]?.thumbnailUrl?.let {
-//                    DynamicAsyncImage(
-//                        imageUrl = it,
-//                    )
-//                }
-//            }
-//        }
     }
 }
 

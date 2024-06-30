@@ -7,5 +7,5 @@ data class Content(
     val thumbnailUrl: String,
     val url: String,
     val datetime: Instant,
-    val type: ContentType,
+    val type: String,
 )
