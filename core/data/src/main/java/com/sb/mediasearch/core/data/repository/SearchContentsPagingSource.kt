@@ -6,6 +6,7 @@ import com.sb.mediasearch.core.common.network.Dispatcher
 import com.sb.mediasearch.core.common.network.MsDispatchers
 import com.sb.mediasearch.core.model.Content
 import com.sb.mediasearch.core.network.KakaoNetworkDataSource
+import com.skydoves.sandwich.ApiResponse
 import com.skydoves.sandwich.onError
 import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
@@ -16,8 +17,8 @@ import kotlinx.coroutines.withContext
 internal class SearchContentsPagingSource (
     @Dispatcher(MsDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
     private val kakaoNetwork: KakaoNetworkDataSource,
-    private val query: kotlin.String,
-    private val sort: kotlin.String,
+    private val query: String,
+    private val sort: String,
 ) : PagingSource<Int, Content>() {
     override fun getRefreshKey(state: PagingState<Int, Content>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -98,15 +99,19 @@ internal class SearchContentsPagingSource (
                     // 예외 처리
                 }
 
+                if (videoResponse is ApiResponse.Success && imageResponse is ApiResponse.Success) {
 
-                val combinedContents: List<Content> = (videoContents + imageContents).sortedByDescending { it.datetime }
-                val isEnd = videoIsEnd && imageIsEnd
+                    val combinedContents: List<Content> = (videoContents + imageContents).sortedByDescending { it.datetime }
+                    val isEnd = videoIsEnd && imageIsEnd
 
-                LoadResult.Page(
-                    data = combinedContents,
-                    prevKey = if (currentPage == INIT_PAGE) null else currentPage - 1,
-                    nextKey = if (isEnd) null else currentPage + 1
-                )
+                    LoadResult.Page(
+                        data = combinedContents,
+                        prevKey = if (currentPage == INIT_PAGE) null else currentPage - 1,
+                        nextKey = if (isEnd) null else currentPage + 1
+                    )
+                } else {
+                    LoadResult.Error(Exception("Failed to load data"))
+                }
             }
         } catch (exception: Exception) {
             return LoadResult.Error(exception)
