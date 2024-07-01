@@ -18,4 +18,7 @@ interface ContentDao {
 
     @Query(value = "SELECT * FROM contents ORDER BY datetime ASC")
     fun getBookmarkedContents(): Flow<List<ContentEntity>>
+
+    @Query(value = "DELETE FROM contents WHERE uuid = :uuid")
+    fun deleteBookmarkedContent(uuid: String)
 }

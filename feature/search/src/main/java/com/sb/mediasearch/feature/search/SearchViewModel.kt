@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.sb.mediasearch.core.data.repository.BookmarkRepository
 import com.sb.mediasearch.core.domain.SearchContentsUseCase
 import com.sb.mediasearch.core.model.Content
@@ -13,7 +14,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -54,9 +54,14 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun insertOrReplaceBookmarkedContent(content: Content) {
+    fun bookmarkContent(content: Content) {
         viewModelScope.launch {
-            bookmarkRepository.insertOrReplaceBookmarkedContent(content)
+            val updatedContent = content.copy(isBookmarked = !content.isBookmarked)
+
+            bookmarkRepository.bookmarkContent(content)
+            _searchPagingResult.value = _searchPagingResult.value.map {
+                if (it.uuid == updatedContent.uuid) updatedContent else it
+            }
         }
     }
 

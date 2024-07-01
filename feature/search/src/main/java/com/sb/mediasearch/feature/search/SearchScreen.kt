@@ -44,7 +44,7 @@ internal fun SearchRoute(
         modifier = modifier,
         searchQuery = searchQuery,
         onSearchQueryChanged = viewModel::onSearchQueryChanged,
-        onClickBookmark = viewModel::insertOrReplaceBookmarkedContent,
+        onClickBookmark = viewModel::bookmarkContent,
         searchPagingResult = searchPagingResult,
     )
 }

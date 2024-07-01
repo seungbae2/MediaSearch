@@ -13,6 +13,7 @@ import com.skydoves.sandwich.onSuccess
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 internal class SearchContentsPagingSource (
     @Dispatcher(MsDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
@@ -65,6 +66,7 @@ internal class SearchContentsPagingSource (
                     if (!videoIsEnd) {
                         videoContents.addAll(data.documents.map { video ->
                             Content(
+                                uuid = UUID.randomUUID().toString(),
                                 playTime = video.playTime,
                                 thumbnailUrl = video.thumbnail,
                                 url = video.url,
@@ -85,6 +87,7 @@ internal class SearchContentsPagingSource (
                     if (!imageIsEnd) {
                         imageContents.addAll(data.documents.map { image ->
                             Content(
+                                uuid = UUID.randomUUID().toString(),
                                 playTime = null,
                                 thumbnailUrl = image.thumbnailUrl,
                                 url = image.imageUrl,

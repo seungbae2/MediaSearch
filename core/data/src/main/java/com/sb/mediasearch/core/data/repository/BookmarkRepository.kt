@@ -5,6 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface BookmarkRepository {
     fun getBookmarks(): Flow<List<Content>>
-    suspend fun insertOrReplaceBookmarkedContent(content: Content)
-    suspend fun deleteBookmarkedContent(content: Content)
+    suspend fun bookmarkContent(content: Content)
 }

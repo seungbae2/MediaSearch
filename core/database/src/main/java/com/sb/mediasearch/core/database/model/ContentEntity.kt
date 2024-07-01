@@ -4,13 +4,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.sb.mediasearch.core.model.Content
 import kotlinx.datetime.Instant
+import java.util.UUID
 
 @Entity(
     tableName = "contents",
 )
 data class ContentEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey(autoGenerate = false)
+    val uuid: String,
     val playTime: Int?,
     val thumbnailUrl: String,
     val url: String,
@@ -19,6 +20,7 @@ data class ContentEntity(
 )
 
 fun ContentEntity.asExternalModel() = Content(
+    uuid = uuid,
     playTime = playTime,
     thumbnailUrl = thumbnailUrl,
     url = url,
