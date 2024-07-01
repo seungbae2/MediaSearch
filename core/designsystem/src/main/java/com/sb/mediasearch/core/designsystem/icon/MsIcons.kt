@@ -33,6 +33,7 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Upcoming
+import androidx.compose.material.icons.rounded.Videocam
 import androidx.compose.material.icons.rounded.ViewDay
 
 object MsIcons {
@@ -53,4 +54,5 @@ object MsIcons {
     val Upcoming = Icons.Rounded.Upcoming
     val UpcomingBorder = Icons.Outlined.Upcoming
     val ViewDay = Icons.Rounded.ViewDay
+    val video = Icons.Rounded.Videocam
 }
