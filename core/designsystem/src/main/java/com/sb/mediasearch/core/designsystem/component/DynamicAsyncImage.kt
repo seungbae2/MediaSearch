@@ -44,7 +44,6 @@ fun DynamicAsyncImage(
         contentAlignment = Alignment.Center,
     ) {
         if (isLoading) {
-            // Display a progress bar while loading
             CircularProgressIndicator(
                 modifier = Modifier
                     .align(Alignment.Center)

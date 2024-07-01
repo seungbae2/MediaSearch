@@ -19,7 +19,7 @@ import com.sb.mediasearch.core.designsystem.icon.MsIcons
 import com.sb.mediasearch.core.model.Content
 
 @Composable
-internal fun ItemCard(content: Content, onClickBookmark: (Content) -> Unit) {
+fun ContentItem(content: Content, onClickBookmark: (Content) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()

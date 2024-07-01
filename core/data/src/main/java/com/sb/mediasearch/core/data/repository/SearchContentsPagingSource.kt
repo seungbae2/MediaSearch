@@ -4,16 +4,14 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sb.mediasearch.core.common.network.Dispatcher
 import com.sb.mediasearch.core.common.network.MsDispatchers
+import com.sb.mediasearch.core.data.mapper.toContentData
 import com.sb.mediasearch.core.model.Content
 import com.sb.mediasearch.core.network.KakaoNetworkDataSource
 import com.skydoves.sandwich.ApiResponse
-import com.skydoves.sandwich.onError
-import com.skydoves.sandwich.onException
 import com.skydoves.sandwich.onSuccess
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import java.util.UUID
 
 internal class SearchContentsPagingSource (
     @Dispatcher(MsDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
@@ -65,20 +63,9 @@ internal class SearchContentsPagingSource (
                     videoIsEnd = data.meta.isEnd
                     if (!videoIsEnd) {
                         videoContents.addAll(data.documents.map { video ->
-                            Content(
-                                uuid = UUID.randomUUID().toString(),
-                                playTime = video.playTime,
-                                thumbnailUrl = video.thumbnail,
-                                url = video.url,
-                                datetime = video.datetime,
-                                type = "video"
-                            )
+                            video.toContentData()
                         })
                     }
-                }.onError {
-                    // 오류 처리
-                }.onException {
-                    // 예외 처리
                 }
 
                 // 이미지 응답 처리
@@ -86,24 +73,12 @@ internal class SearchContentsPagingSource (
                     imageIsEnd = data.meta.isEnd
                     if (!imageIsEnd) {
                         imageContents.addAll(data.documents.map { image ->
-                            Content(
-                                uuid = UUID.randomUUID().toString(),
-                                playTime = null,
-                                thumbnailUrl = image.thumbnailUrl,
-                                url = image.imageUrl,
-                                datetime = image.datetime,
-                                type = "image"
-                            )
+                            image.toContentData()
                         })
                     }
-                }.onError {
-                    // 오류 처리
-                }.onException {
-                    // 예외 처리
                 }
 
                 if (videoResponse is ApiResponse.Success && imageResponse is ApiResponse.Success) {
-
                     val combinedContents: List<Content> = (videoContents + imageContents).sortedByDescending { it.datetime }
                     val isEnd = videoIsEnd && imageIsEnd
 

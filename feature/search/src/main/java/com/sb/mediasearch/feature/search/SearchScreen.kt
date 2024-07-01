@@ -21,7 +21,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.sb.mediasearch.core.model.Content
-import com.sb.mediasearch.feature.search.component.ItemCard
+import com.sb.mediasearch.feature.search.component.ContentItem
 import com.sb.mediasearch.feature.search.component.SearchToolbar
 
 @Composable
@@ -82,7 +82,7 @@ internal fun SearchScreen(
                 ) {
                     items(searchPagingResult.itemCount) { index ->
                         searchPagingResult[index]?.let {
-                            ItemCard(
+                            ContentItem(
                                 content = it,
                                 onClickBookmark = onClickBookmark
                             )
