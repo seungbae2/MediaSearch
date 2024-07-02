@@ -13,12 +13,12 @@ interface ContentDao {
     @Upsert
     suspend fun insertOrReplaceBookmarkedContent(content: ContentEntity)
 
-    @Delete
-    suspend fun deleteContent(content: ContentEntity)
-
     @Query(value = "SELECT * FROM contents ORDER BY datetime ASC")
     fun getBookmarkedContents(): Flow<List<ContentEntity>>
 
     @Query(value = "DELETE FROM contents WHERE uuid = :uuid")
     fun deleteBookmarkedContent(uuid: String)
+
+    @Query(value = "DELETE FROM contents")
+    suspend fun deleteAllBookmarks()
 }

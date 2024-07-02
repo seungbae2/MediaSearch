@@ -35,4 +35,6 @@ internal class DefaultBookmarkRepository @Inject constructor(
             )
         }
     }
+
+    override suspend fun deleteAllBookmarks() = contentDao.deleteAllBookmarks()
 }
