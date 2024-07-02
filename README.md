@@ -8,6 +8,10 @@
   <img src="screenshot/Screenshot_SearchScreen_Bookmark.png" alt="Search Screen Bookmark" width="200" />
 </p>
 
+## Guide
+local.properties 파일에 카카오 rest api key 넣어 주세요
+API_KEY="YOUR_KAKAO_REST_API_KEY"
+
 ## Language
 * Kotlin
 
