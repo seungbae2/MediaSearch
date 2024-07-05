@@ -1,5 +1,3 @@
-# 이승배 노머스 사전과제
-
 ## 이미지 검색 앱
 <p align="center">
   <img src="screenshot/Screenshot_SearchScreen.png" alt="Search Screen" width="200" />
