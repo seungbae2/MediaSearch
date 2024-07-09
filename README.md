@@ -1,11 +1,9 @@
-# 이승배 노머스 사전과제
-
 ## 이미지 검색 앱
 <p align="center">
   <img src="screenshot/Screenshot_SearchScreen.png" alt="Search Screen" width="200" />
-  <img src="screenshot/Screenshot_BookmarkScreen.png" alt="Bookmark Screen" width="200" />
   <img src="screenshot/Screenshot_SearchScreen_Search.png" alt="Search Screen Search" width="200" />
   <img src="screenshot/Screenshot_SearchScreen_Bookmark.png" alt="Search Screen Bookmark" width="200" />
+  <img src="screenshot/Screenshot_BookmarkScreen.png" alt="Bookmark Screen" width="200" />
 </p>
 
 ## Guide
@@ -23,6 +21,7 @@ API_KEY="YOUR_KAKAO_REST_API_KEY"
   * Navigation
 * Paging3
 * Retrofit
+* Sandwich
 * room
 * Hilt
 * Coil
