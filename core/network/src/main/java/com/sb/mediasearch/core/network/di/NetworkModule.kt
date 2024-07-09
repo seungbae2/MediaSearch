@@ -33,7 +33,7 @@ internal object NetworkModule {
     @Provides
     @Singleton
     fun okHttpCallFactory(cacheDir: File): Call.Factory {
-        val cache = Cache(cacheDir, Long.MAX_VALUE)  // 기본 설정으로 캐시 사용, 크기는 시스템에 의해 관리됨
+        val cache = Cache(cacheDir, (5 * 1024 * 1024).toLong())  // 기본 설정으로 캐시 사용, 크기는 시스템에 의해 관리됨
 
         return OkHttpClient.Builder()
             .cache(cache)
@@ -54,7 +54,7 @@ internal object NetworkModule {
                 val request = requestBuilder.build()
                 chain.proceed(request)
             }
-            .addNetworkInterceptor { chain ->
+            .addInterceptor { chain ->
                 val response = chain.proceed(chain.request())
                 response.newBuilder()
                     .header(

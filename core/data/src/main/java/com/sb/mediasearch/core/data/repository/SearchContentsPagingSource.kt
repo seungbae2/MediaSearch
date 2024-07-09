@@ -1,5 +1,6 @@
 package com.sb.mediasearch.core.data.repository
 
+import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sb.mediasearch.core.common.network.Dispatcher
@@ -8,6 +9,7 @@ import com.sb.mediasearch.core.data.mapper.toContentData
 import com.sb.mediasearch.core.model.Content
 import com.sb.mediasearch.core.network.KakaoNetworkDataSource
 import com.skydoves.sandwich.ApiResponse
+import com.skydoves.sandwich.onFailure
 import com.skydoves.sandwich.onSuccess
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
@@ -66,6 +68,8 @@ internal class SearchContentsPagingSource (
                             video.toContentData()
                         })
                     }
+                }.onFailure {
+                    videoContents.addAll(emptyList())
                 }
 
                 // 이미지 응답 처리
@@ -76,12 +80,22 @@ internal class SearchContentsPagingSource (
                             image.toContentData()
                         })
                     }
+                }.onFailure {
+                    imageContents.addAll(emptyList())
                 }
 
                 if (videoResponse is ApiResponse.Success && imageResponse is ApiResponse.Success) {
                     val combinedContents: List<Content> = (videoContents + imageContents).sortedByDescending { it.datetime }
                     val isEnd = videoIsEnd && imageIsEnd
 
+                    LoadResult.Page(
+                        data = combinedContents,
+                        prevKey = if (currentPage == INIT_PAGE) null else currentPage - 1,
+                        nextKey = if (isEnd) null else currentPage + 1
+                    )
+                } else if (videoResponse is ApiResponse.Failure || imageResponse is ApiResponse.Failure) {
+                    val combinedContents: List<Content> = (videoContents + imageContents).sortedByDescending { it.datetime }
+                    val isEnd = videoIsEnd && imageIsEnd
                     LoadResult.Page(
                         data = combinedContents,
                         prevKey = if (currentPage == INIT_PAGE) null else currentPage - 1,

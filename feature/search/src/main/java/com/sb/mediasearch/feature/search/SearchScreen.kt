@@ -11,6 +11,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,7 +55,8 @@ internal fun SearchScreen(
             searchQuery = searchQuery,
             onSearchQueryChanged = onSearchQueryChanged,
         )
-        val loadState = searchPagingResult.loadState
+
+        val loadState = remember(searchPagingResult.loadState) { searchPagingResult.loadState }
 
         when {
             loadState.refresh is LoadState.Loading -> {
@@ -80,10 +82,13 @@ internal fun SearchScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(searchPagingResult.itemCount) { index ->
-                        searchPagingResult[index]?.let {
+                    items(
+                        count = searchPagingResult.itemCount,
+                        key = { index -> searchPagingResult[index]?.uuid ?: index } // assuming Content has a unique 'id' field
+                    ) { index ->
+                        searchPagingResult[index]?.let { content ->
                             ContentItem(
-                                content = it,
+                                content = content,
                                 onClickBookmark = onClickBookmark
                             )
                         }
